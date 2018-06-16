@@ -17,6 +17,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.internal.ui.javaeditor.ASTProvider;
 
 import com.architexa.collab.proxy.PluginUtils;
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 import com.architexa.diagrams.jdt.Activator;
 import com.architexa.diagrams.jdt.IJEUtils;
 import com.architexa.diagrams.jdt.RJMapToId;
@@ -26,7 +27,7 @@ import com.architexa.diagrams.utils.LRUCache;
 public class ASTUtil {
     private static final Logger logger = Activator.getLogger(ASTUtil.class);
     
-    private static double jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+    private static TripleInt jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
 
     private static LRUCache<IJavaElement, CompilationUnit> astCacheTypeRootToCU = new LRUCache<IJavaElement, CompilationUnit>(10);
     
@@ -99,7 +100,7 @@ public class ASTUtil {
 			
 			// Part II: call getAST
 			Class<?> param1Class = IJavaElement.class;
-			if (jdtUIVer >= 3.4)
+			if (jdtUIVer.compareTo(TripleInt.of(3,4,0))  >= 0)
 				param1Class = Class.forName("org.eclipse.jdt.core.ITypeRoot");
 			Method mth = astProvider.getClass().getMethod("getAST", param1Class, waitYes.getClass(), IProgressMonitor.class);
 			Object result = mth.invoke(astProvider, typeRoot, waitYes, null);

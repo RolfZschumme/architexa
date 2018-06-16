@@ -16,18 +16,19 @@ import org.eclipse.team.core.history.IFileRevision;
 import org.eclipse.team.internal.ui.history.FileRevisionEditorInput;
 
 import com.architexa.collab.proxy.PluginUtils;
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 
 
 public class FREIUtil {
 
-	private static double jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+	private static TripleInt jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
 	
 	// eclipse 3.3+ createEditorInputFor included in FileRevisionEditorInput class
 	// eclipse 3.2 functionality here
 	public static FileRevisionEditorInput createEditorInputFor(IFileRevision revision, IProgressMonitor monitor) throws CoreException {
 		
 		//3.3+ call existing method
-		if (jdtUIVer >= 3.3 )
+		if (jdtUIVer.compareTo(TripleInt.of(3,3,0)) >= 0 )
 		{	
 			try {
 				Method mth = FileRevisionEditorInput.class.getMethod("createEditorInputFor", IFileRevision.class, IProgressMonitor.class);

@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 import com.architexa.collab.proxy.PluginUtils;
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 import com.architexa.intro.AtxaIntroPlugin;
 
 public class UpdateAction extends Action {
@@ -23,12 +24,12 @@ public class UpdateAction extends Action {
 		this.isExtended = isExtended;
 	}
 	
-	private static double jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+	private static TripleInt jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
 	@Override
 	public void run() {
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		try {
-			if (jdtUIVer >= 3.6) { // use equinox p2 update support
+			if (jdtUIVer.compareTo(TripleInt.of(3,6,0))  >= 0) { // use equinox p2 update support
 				Class<?> uhClass = Class.forName("org.eclipse.equinox.internal.p2.ui.sdk.UpdateHandler");
 				Method getExecMth = uhClass.getMethod("execute", ExecutionEvent.class);
 				getExecMth.setAccessible(true);

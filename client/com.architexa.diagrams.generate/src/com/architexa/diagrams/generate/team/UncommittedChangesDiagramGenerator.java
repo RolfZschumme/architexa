@@ -64,6 +64,7 @@ import org.openrdf.sesame.sail.StatementIterator;
 
 import com.architexa.collab.UIUtils;
 import com.architexa.collab.proxy.PluginUtils;
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 import com.architexa.diagrams.RSECore;
 import com.architexa.diagrams.chrono.util.MethodDeclarationFinder;
 import com.architexa.diagrams.commands.AddCommentCommand;
@@ -1079,7 +1080,7 @@ public abstract class UncommittedChangesDiagramGenerator extends Action {
 	@SuppressWarnings("unchecked")
 	private Constructor<? extends ITokenComparator> getTokenComparatorCons() throws ClassNotFoundException, SecurityException, NoSuchMethodException {
 		String tokenComparatorClassName = "org.eclipse.compare.contentmergeviewer.TokenComparator"; 
-		if (PluginUtils.getPluginVer("org.eclipse.compare") < 3.4)
+		if (PluginUtils.getPluginVer("org.eclipse.compare").compareTo(TripleInt.of(3,4,0)) < 0)
 			tokenComparatorClassName = "org.eclipse.compare.internal.TokenComparator";
 		Class<? extends ITokenComparator> tokenComparatorClass = (Class<? extends ITokenComparator>) Class.forName(tokenComparatorClassName);
 		return tokenComparatorClass.getConstructor(String.class);

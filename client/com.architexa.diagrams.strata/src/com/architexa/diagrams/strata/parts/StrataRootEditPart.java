@@ -24,6 +24,7 @@ import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 import com.architexa.diagrams.RSECore;
 import com.architexa.diagrams.draw2d.NonEmptyFigure;
 import com.architexa.diagrams.draw2d.NonEmptyFigureSupport;
@@ -83,7 +84,7 @@ import com.architexa.store.StoreUtil;
 public class StrataRootEditPart extends TitledArtifactEditPart implements /*IPropertySource,*/ BasicRootController, IRSERootEditPart {
 
 	public static final Logger logger = StrataPlugin.getLogger(StrataRootEditPart.class);
-	private static double jdtUIVer = com.architexa.collab.proxy.PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+	private static TripleInt jdtUIVer = com.architexa.collab.proxy.PluginUtils.getPluginVer("org.eclipse.jdt.ui");
 	
 	Figure figHeading = new Figure();
 	public NonEmptyFigure nonEmptyFigure;
@@ -318,14 +319,14 @@ public class StrataRootEditPart extends TitledArtifactEditPart implements /*IPro
 		StrataEditor editor = getStrataEditor();
 		// loadModel only applies to loaded Strata FILES
 		Class<?> locClass = null;
-		if (jdtUIVer >= 3.3) {
+		if (jdtUIVer.compareTo(TripleInt.of(3,3,0)) >= 0) {
 			try {
 				locClass = Class.forName("org.eclipse.ui.ide.FileStoreEditorInput");
 			} catch (Exception e) {
 				System.err.println("Issue with loading: " + e);
 			}
 		}
-		else if (jdtUIVer < 3.3) {
+		else if (jdtUIVer.compareTo(TripleInt.of(3,3,0)) < 0) {
 			try {
 				locClass = Class.forName("org.eclipse.ui.internal.editors.text.JavaFileEditorInput");
 			} catch (Exception e) {
@@ -334,8 +335,8 @@ public class StrataRootEditPart extends TitledArtifactEditPart implements /*IPro
 		}
 		if (editor != null && 
 				(editor.getEditorInput() instanceof FileEditorInput || 
-						(jdtUIVer >= 3.3 && editor.getEditorInput().getClass().equals(locClass))
-						|| (jdtUIVer < 3.3 && editor.getEditorInput().getClass().equals(locClass)) 
+						(jdtUIVer.compareTo(TripleInt.of(3,3,0))  >= 0 && editor.getEditorInput().getClass().equals(locClass))
+						|| (jdtUIVer.compareTo(TripleInt.of(3,3,0))  < 0 && editor.getEditorInput().getClass().equals(locClass)) 
 						|| editor.getEditorInput() instanceof RSEShareableDiagramEditorInput)) { //should only run ONLOAD
 			editor.clearDirtyFlag();
 			if (editor.getMemRepo() == null)

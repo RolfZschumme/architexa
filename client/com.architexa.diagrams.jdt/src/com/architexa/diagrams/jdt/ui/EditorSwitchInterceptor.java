@@ -20,6 +20,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 import com.architexa.collab.proxy.PluginUtils;
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 import com.architexa.diagrams.jdt.Activator;
 import com.architexa.diagrams.ui.RSEEditor;
 import com.architexa.diagrams.utils.RootEditPartUtils;
@@ -119,8 +120,8 @@ public class EditorSwitchInterceptor {
 			};
 			fViewer.addPostSelectionChangedListener(newListener);
 
-			double jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
-			if(jdtUIVer < 3.5) {
+			TripleInt jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+			if(jdtUIVer.compareTo(TripleInt.of(3,5,0)) < 0) {
 				Field fPostSelectionListenerField = PackageExplorerPart.class.getDeclaredField("fPostSelectionListener");
 				fPostSelectionListenerField.setAccessible(true);
 				fPostSelectionListenerField.set(packageExplorer, newListener);
@@ -134,8 +135,9 @@ public class EditorSwitchInterceptor {
 	private ISelectionChangedListener getSelListener(PackageExplorerPart 
 			packageExplorer) throws SecurityException, NoSuchFieldException, 
 			IllegalArgumentException, IllegalAccessException {
-		double jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
-		if(jdtUIVer >= 3.5) {
+		TripleInt jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+
+		if(jdtUIVer.compareTo(TripleInt.of(3,5,0)) >= 0) {
 			// Since 3.5, PackageExplorerPart keeps a OpenAndLinkWithEditorHelper
 			// that stores the selection listener
 			Field helperField = PackageExplorerPart.class.getDeclaredField("fOpenAndLinkWithEditorHelper");
@@ -167,8 +169,8 @@ public class EditorSwitchInterceptor {
 		// Otherwise, link to editor for selection as PackageExplorerPart normally would
 		if(!packageExplorer.isLinkingEnabled()) return;
 
-		double jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
-		if(jdtUIVer >= 3.5) {
+		TripleInt jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+		if(jdtUIVer.compareTo(TripleInt.of(3,5,0)) >= 0) {
 
 			Field helperField = PackageExplorerPart.class.getDeclaredField("fOpenAndLinkWithEditorHelper");
 			helperField.setAccessible(true);

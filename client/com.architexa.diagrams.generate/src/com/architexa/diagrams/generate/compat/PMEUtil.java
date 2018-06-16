@@ -12,18 +12,19 @@ import org.eclipse.team.internal.ui.Utils;
 import org.eclipse.ui.internal.PopupMenuExtender;
 
 import com.architexa.collab.proxy.PluginUtils;
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 
 
 public class PMEUtil {
 	
-	private static double jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+	private static TripleInt jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
 	
 	//Version 3.3+ includes getManager() method in PopupMenuExtender class
 	//Version 3.2 No such access method, desired accessed variable named "menu"
 	public static MenuManager getManager(PopupMenuExtender pm) {
 		
 		//3.3 and above supports
-		if (jdtUIVer >= 3.3 ){
+		if (jdtUIVer.compareTo(TripleInt.of(3,3,0)) >= 0 ){
 			//get the method
 			try {
 				Method mth = PopupMenuExtender.class.getMethod("getManager");

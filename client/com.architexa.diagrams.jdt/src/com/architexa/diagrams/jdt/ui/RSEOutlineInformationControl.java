@@ -14,6 +14,7 @@ import org.eclipse.jdt.internal.ui.text.AbstractInformationControl;
 import org.eclipse.jdt.ui.ISharedImages;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.bindings.TriggerSequence;
 import org.eclipse.jface.dialogs.PopupDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -53,6 +54,7 @@ import org.eclipse.ui.PlatformUI;
 import org.openrdf.model.Resource;
 
 import com.architexa.collab.proxy.PluginUtils;
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 import com.architexa.compat.CompatUtils;
 import com.architexa.diagrams.RSECore;
 import com.architexa.diagrams.commands.AddNodeAndRelCmd;
@@ -189,9 +191,9 @@ public class RSEOutlineInformationControl extends AbstractInformationControl {
 		try {
 			// Don't want the persist option(s) 
 			// (Remember Size / Location) in the dialog menu
-			double jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+			TripleInt jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
 			String fieldName;
-			if(jdtUIVer < 3.5)
+			if(jdtUIVer.compareTo(TripleInt.of(3,5,0)) < 0)
 				// Field is showPersistAction because there is one
 				// "Remember Size and Location" action in the dialog menu
 				fieldName = "showPersistAction";
@@ -565,9 +567,9 @@ public class RSEOutlineInformationControl extends AbstractInformationControl {
 				@SuppressWarnings("deprecation")
 				@Override
 				public void keyPressed(KeyEvent e) {
-					int accelerator = org.eclipse.ui.keys.SWTKeySupport.convertEventToUnmodifiedAccelerator(e);
-					org.eclipse.ui.keys.KeySequence keySequence = org.eclipse.ui.keys.KeySequence.getInstance(org.eclipse.ui.keys.SWTKeySupport.convertAcceleratorToKeyStroke(accelerator));
-					org.eclipse.ui.keys.KeySequence[] sequences= getInvokingCommandKeySequences();
+					int accelerator = org.eclipse.jface.bindings.keys.SWTKeySupport.convertEventToUnmodifiedAccelerator(e);
+					org.eclipse.jface.bindings.keys.KeySequence keySequence = org.eclipse.jface.bindings.keys.KeySequence.getInstance(org.eclipse.jface.bindings.keys.SWTKeySupport.convertAcceleratorToKeyStroke(accelerator));
+					TriggerSequence[] sequences= getInvokingCommandKeySequences();
 					if (sequences == null)
 						return;
 					for (int i= 0; i < sequences.length; i++) {
