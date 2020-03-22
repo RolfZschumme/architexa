@@ -21,19 +21,20 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 
 import com.architexa.collab.proxy.PluginUtils;
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 import com.architexa.diagrams.jdt.compat.ASTUtil;
 
 
 public class ITFBMUtil {
 
-	private static double jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+	private static TripleInt jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
 	
 	//connect(...) in IFileBufferManager class, Eclipse 3.3+ use LocationKind argument
 	//Eclipse 3.2: LocationKind is undefined, method
 	@SuppressWarnings("deprecation")
 	public static void connectIFILE(ITextFileBufferManager manage, IPath location, IProgressMonitor monitor) {
 		
-		if(jdtUIVer >= 3.3){
+		if(jdtUIVer.compareTo(TripleInt.of(3,3,0)) >= 0){
 			//Location class exists in this version, so need it as well as to call the better available connect
 			//method using it
 			try{
@@ -59,7 +60,7 @@ public class ITFBMUtil {
 	//eclipse 3.2 LocationKind is undefined
 	@SuppressWarnings("deprecation")
 	public static ITextFileBuffer getTextFileBufferIFILE(ITextFileBufferManager manage, IPath location) {
-		if(jdtUIVer >= 3.3){
+		if(jdtUIVer.compareTo(TripleInt.of(3,3,0)) >= 0){
 			//Location class exists in this version, so need to cast locKind to it for method invocation
 			try{
 				Class<?> locClass = Class.forName("org.eclipse.core.filebuffers.LocationKind");

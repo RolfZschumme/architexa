@@ -31,6 +31,7 @@ import org.eclipse.ui.dialogs.ListSelectionDialog;
 
 import com.architexa.collab.UIUtils;
 import com.architexa.collab.proxy.PluginUtils;
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 import com.architexa.collab.ui.CollabUIUtils;
 import com.architexa.collab.ui.ShareByEmailAction;
 import com.architexa.rse.AccountSettings;
@@ -74,9 +75,9 @@ public class ShareByEmailTab extends ShareDialogTab {
 		// Since 3.3, can give Text a SWT.SEARCH style and use Text.setMessage() 
 		// to display the field text as a "hint" (gray text that explains the 
 		// purpose of the field)
-		double jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+		TripleInt jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
 		String hintMsg = "Separate each address with a semicolon";
-		if(jdtUIVer >= 3.3) {
+		if(jdtUIVer.compareTo(TripleInt.of(3,3,0)) >= 0) {
 			toField = new Text(fieldArea, SWT.SINGLE | SWT.BORDER | 1 << 7); // SWT.SEARCH = 1 << 7;
 			toField.setText("");
 			try {
@@ -132,7 +133,7 @@ public class ShareByEmailTab extends ShareDialogTab {
 		};
 
 //		proposalProvider.setFiltering(true); (only available since 3.3)
-		if(jdtUIVer >= 3.3) {
+		if(jdtUIVer.compareTo(TripleInt.of(3,3,0)) >= 0) {
 			try {
 				// show only contacts matching what user has typed so far
 				Method mth = proposalProvider.getClass().getMethod("setFiltering", boolean.class);

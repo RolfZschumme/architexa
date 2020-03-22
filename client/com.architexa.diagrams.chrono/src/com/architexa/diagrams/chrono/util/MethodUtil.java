@@ -48,6 +48,7 @@ import org.openrdf.model.Value;
 import org.openrdf.sesame.sail.StatementIterator;
 
 import com.architexa.collab.proxy.PluginUtils;
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 import com.architexa.diagrams.RSECore;
 import com.architexa.diagrams.chrono.animation.AnimateChainExpandCommand;
 import com.architexa.diagrams.chrono.commands.ConnectionCreateCommand;
@@ -1096,21 +1097,21 @@ public class MethodUtil {
 
 	// callee should be true if want to get callee root, false if want caller root
 	private static MethodWrapper getCalleeOrCallerRoot(IMethod method, boolean callee) throws Throwable {
-		double jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+		TripleInt jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
 		CallHierarchy callHierarchy = CallHierarchy.getDefault();
 
 		Method mth;
-		if(jdtUIVer < 3.4)
+		if(jdtUIVer.compareTo(TripleInt.of(3,4,0)) < 0)
 			mth = callHierarchy.getClass().getMethod(callee?"getCalleeRoot":"getCallerRoot", IMethod.class);
 		else
 			mth = callHierarchy.getClass().getMethod(callee?"getCalleeRoots":"getCallerRoots", IMember[].class);
 
 		Object param;
-		if(jdtUIVer < 3.4) param = method;
+		if(jdtUIVer.compareTo(TripleInt.of(3,4,0)) < 0) param = method;
 		else param = new IMember[]{method};
 
 		Object result = mth.invoke(callHierarchy, param);
-		if(jdtUIVer < 3.4) return (MethodWrapper) result;
+		if(jdtUIVer.compareTo(TripleInt.of(3,4,0)) < 0) return (MethodWrapper) result;
 		else return ((MethodWrapper[])result)[0];
 	}
 

@@ -25,6 +25,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 
 import com.architexa.collab.proxy.PluginUtils;
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 import com.architexa.diagrams.jdt.Activator;
 import com.architexa.diagrams.ui.RSEEditor;
 import com.architexa.diagrams.utils.RootEditPartUtils;
@@ -152,8 +153,8 @@ public class RSEOpenTypeHandler extends RSEBindingServiceHandler {
 		// In 3.2, need to use OpenTypeSelectionDialog2
 		try {
 			Class openTypeSelectionDialog;
-			double jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
-			if(jdtUIVer >= 3.3) {
+			TripleInt jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+			if(jdtUIVer.compareTo(TripleInt.of(3,3,0)) >= 0) {
 				openTypeSelectionDialog = Class.forName("org.eclipse.jdt.internal.ui.dialogs.OpenTypeSelectionDialog");
 			} else {
 				openTypeSelectionDialog = Class.forName("org.eclipse.jdt.internal.ui.dialogs.OpenTypeSelectionDialog2");

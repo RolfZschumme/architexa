@@ -18,6 +18,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
 import com.architexa.collab.proxy.PluginUtils;
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 import com.architexa.org.eclipse.draw2d.Graphics;
 import com.architexa.org.eclipse.draw2d.IFigure;
 import com.architexa.org.eclipse.draw2d.SWTGraphics;
@@ -79,7 +80,7 @@ public class Exporter implements IWorkbenchWindowActionDelegate {
 	private static boolean save(IExportableEditorPart editor, String filename, int format) {
 		try {
 			// 3.2 does not support PNGs so we need to change format
-			if (PluginUtils.getPluginVer("org.eclipse.jdt.ui") <= 3.2)
+			if (PluginUtils.getPluginVer("org.eclipse.jdt.ui").compareTo(TripleInt.of(3,2,0))  <= 0)
 				format = SWT.IMAGE_JPEG;
 			saveEditorContentsAsImage(editor, filename, null, format);
 		} catch (Exception ex) {

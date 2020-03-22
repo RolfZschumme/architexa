@@ -13,6 +13,7 @@ import org.osgi.util.tracker.ServiceTracker;
 
 import com.architexa.collab.core.IProxyDataSource;
 import com.architexa.collab.core.IProxyDataSourceGenerator;
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 import com.architexa.shared.SharedLogger;
 
 public class ProxyDataSourceGenerator implements IProxyDataSourceGenerator {
@@ -63,10 +64,10 @@ public class ProxyDataSourceGenerator implements IProxyDataSourceGenerator {
 	private ProxyDataSource getProxy () throws IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException, URISyntaxException {
 		ProxyDataSource proxyInfo = new ProxyDataSource();
 		
-		double jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+		TripleInt jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
 		debugString = "";
 		debugString += "Eclipse Version: " + jdtUIVer;
-		if (jdtUIVer >= 3.3) {
+		if (jdtUIVer.compareTo(TripleInt.of(3,3,0)) >= 0) {
 
 			Object service = getProxyTracker().getService();
 			if (service == null) {
@@ -88,7 +89,7 @@ public class ProxyDataSourceGenerator implements IProxyDataSourceGenerator {
 			Object proxyDataList = null;
 			Method getProxyDataMth;
 			Class iProxyDataClass = null;
-			if (jdtUIVer >= 3.5) {
+			if (jdtUIVer.compareTo(TripleInt.of(3,5,0)) >= 0) {
 				// call the select method
 				URI myArchitexa = new URI(HTTP_PROXY_TYPE, "//my.architexa.com", null);
 				getProxyDataMth = iProxyServiceClass.getMethod("select", new Class[] {URI.class});
@@ -154,7 +155,7 @@ public class ProxyDataSourceGenerator implements IProxyDataSourceGenerator {
 					debugString += "\nProxy Domain(Eclipse): " + eclipseDom;
 				}
 			}
-		} else if (jdtUIVer < 3.3) {
+		} else if (jdtUIVer.compareTo(TripleInt.of(3,3,0)) < 0) {
 			// 3.2 stuff
 //			setUpProxyForOlderVersion(proxyInfo);
 		}

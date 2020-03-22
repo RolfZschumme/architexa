@@ -11,19 +11,20 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.team.internal.core.history.LocalFileRevision;
 
 import com.architexa.collab.proxy.PluginUtils;
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 
 
 
 public class LFRUtil {
 	
-	private static double jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+	private static TripleInt jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
 	
 	//Version 3.3+ includes getFile() method in LocalFileRevision class
 	//Version 3.2 No such access method, desired accessed variable named "file"
 	public static IFile getFile(LocalFileRevision fi){
 		
 		//3.3 and above supports
-		if (jdtUIVer >= 3.3 ){
+		if (jdtUIVer.compareTo(TripleInt.of(3,3,0)) >= 0 ){
 			try {
 				Method mth = LocalFileRevision.class.getMethod("getFile");
 				return (IFile) mth.invoke(fi);

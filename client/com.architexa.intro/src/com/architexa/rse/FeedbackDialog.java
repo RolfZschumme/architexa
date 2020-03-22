@@ -39,6 +39,7 @@ import org.osgi.framework.Bundle;
 
 import com.architexa.collab.UIUtils;
 import com.architexa.collab.proxy.PluginUtils;
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 import com.architexa.intro.AtxaIntroPlugin;
 
 
@@ -324,12 +325,12 @@ public class FeedbackDialog extends ResizableDialog {
 	    input.close();
 	}
 
-	private static double jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+	private static TripleInt jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
 	
 	private String getVersion(Bundle bundle) {
 		
 		//3.5+ call existing method
-		if (jdtUIVer >= 3.5 )
+		if (jdtUIVer.compareTo(TripleInt.of(3,5,0))  >= 0 )
 		{	
 			try {
 				Method mth = Bundle.class.getMethod("getVersion", null);

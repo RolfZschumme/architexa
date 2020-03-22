@@ -14,11 +14,12 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 
 import com.architexa.collab.proxy.PluginUtils;
+import com.architexa.collab.proxy.PluginUtils.TripleInt;
 
 
 public class UtilsUtil {
 
-	private static double jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
+	private static TripleInt jdtUIVer = PluginUtils.getPluginVer("org.eclipse.jdt.ui");
 	
 	//openEditor(...) method part of org.eclipse.team.internal.ui.Utils in eclipse 3.3+
 	//eclipse 3.2 no such openEditor method + internal calls to more methods not include
@@ -27,7 +28,7 @@ public class UtilsUtil {
 	public static IEditorPart openEditor(IWorkbenchPage page, FileRevisionEditorInput revision) throws PartInitException{
 		
 		//for eclipse 3.3+ method exists
-		if (jdtUIVer >= 3.3)
+		if (jdtUIVer.compareTo(TripleInt.of(3,3,0)) >= 0)
 		{
 			//get the method
 			try {
